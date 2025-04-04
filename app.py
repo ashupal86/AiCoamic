@@ -851,6 +851,12 @@ def markdown_to_html(markdown_text):
     html = markdown.markdown(markdown_text)
     return html
 
+# Add custom filters
+@app.template_filter('startswith')
+def startswith_filter(s, substring):
+    """Check if a string starts with a given substring."""
+    return s.startswith(substring)
+
 # Add context processor for current year
 @app.context_processor
 def inject_current_year():

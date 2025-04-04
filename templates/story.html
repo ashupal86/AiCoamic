@@ -9,129 +9,498 @@
         --secondary: #a29bfe;
         --accent: #fd79a8;
         --light: #f8f9fa;
-        --dark: #343a40;
+        --dark: #2d3436;
+        --panel-bg: #222831;
+        --intro-bg: #1e272e;
+        --text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
     
     body {
         font-family: 'Poppins', sans-serif;
         background-color: var(--dark);
         color: var(--light);
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    /* Comic book pattern background */
+    body:before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px),
+            radial-gradient(circle, rgba(255,255,255,0.03) 2px, transparent 2px);
+        background-size: 20px 20px, 30px 30px;
+        background-position: 0 0, 15px 15px;
+        z-index: -1;
     }
     
     .story-container {
-        max-width: 800px;
-        margin: 2rem auto;
         padding: 2rem;
-        background-color: #2d3436;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        padding-top: 6rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .comic-header {
+        background-color: var(--panel-bg);
+        border-radius: 10px 10px 0 0;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        overflow: hidden;
+        z-index: 2;
+    }
+    
+    .comic-header:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(108, 92, 231, 0.2) 0%, rgba(253, 121, 168, 0.2) 100%);
+        z-index: -1;
     }
     
     .story-title {
         font-family: 'Bangers', cursive;
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
+        font-size: 3.5rem;
+        margin-bottom: 2rem;
         text-align: center;
-        color: var(--accent);
-        text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+        color: #fff;
+        text-shadow: 3px 3px 0px rgba(0,0,0,0.5), 0 0 10px var(--accent);
         letter-spacing: 2px;
+        line-height: 1.2;
+        transform: rotate(-1deg);
+        transition: all 0.3s ease;
+        padding: 1.5rem 0;
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 8px;
+        position: relative;
+        z-index: 2;
+        border-bottom: 3px solid var(--accent);
+    }
+    
+    .story-title:hover {
+        transform: rotate(0deg) scale(1.02);
+        text-shadow: 4px 4px 0px rgba(0,0,0,0.6), 0 0 15px var(--accent);
+        background-color: rgba(0,0,0,0.4);
+    }
+    
+    .comic-stamp {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: var(--accent);
+        color: white;
+        font-family: 'Bangers', cursive;
+        padding: 10px 15px;
+        border-radius: 50%;
+        transform: rotate(15deg);
+        font-size: 0.9rem;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        z-index: 2;
     }
     
     .story-intro {
         font-size: 1.2rem;
         line-height: 1.6;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background-color: #1e272e;
+        margin: 2rem 0;
+        padding: 1.5rem 2rem;
+        background-color: var(--intro-bg);
         border-left: 5px solid var(--primary);
-        border-radius: 5px;
+        border-radius: 0 10px 10px 0;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .story-intro:after {
+        content: '"';
+        position: absolute;
+        font-family: 'Georgia', serif;
+        font-size: 8rem;
+        opacity: 0.1;
+        top: -30px;
+        left: 10px;
+        color: var(--accent);
     }
     
     .story-panels {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 3rem;
+        position: relative;
+        padding: 2rem 0;
+    }
+    
+    /* Connecting line between panels */
+    .story-panels:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        background: linear-gradient(to bottom, 
+            transparent 0%, 
+            var(--primary) 10%, 
+            var(--primary) 90%, 
+            transparent 100%);
+        transform: translateX(-50%);
+        z-index: -1;
     }
     
     .story-panel {
-        background-color: #222831;
+        background-color: var(--panel-bg);
         border-radius: 10px;
-        padding: 1.5rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         border-top: 4px solid var(--primary);
+        position: relative;
+        transition: all 0.3s ease;
+        transform: perspective(1000px) rotateX(0deg);
+        z-index: 1;
+    }
+    
+    .story-panel:hover {
+        transform: perspective(1000px) rotateX(2deg) translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+    
+    .story-panel:nth-child(odd) {
+        border-top: none;
+        border-left: 4px solid var(--primary);
+        margin-right: 2rem;
+    }
+    
+    .story-panel:nth-child(even) {
+        border-top: none;
+        border-right: 4px solid var(--accent);
+        margin-left: 2rem;
+    }
+    
+    .panel-number {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--primary);
+        color: white;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-family: 'Bangers', cursive;
+        font-size: 1.2rem;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        z-index: 2;
+    }
+    
+    .story-panel:nth-child(even) .panel-number {
+        background-color: var(--accent);
     }
     
     .panel-title {
         font-family: 'Bangers', cursive;
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
         color: var(--secondary);
-        text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        text-shadow: var(--text-shadow);
+        text-align: center;
+        letter-spacing: 1px;
+        position: relative;
+    }
+    
+    .panel-title:after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background-color: var(--accent);
+        margin: 10px auto 0;
+        border-radius: 3px;
     }
     
     .panel-content {
-        font-size: 1.1rem;
+        padding: 1rem;
         line-height: 1.6;
+        font-size: 1.1rem;
+        position: relative;
     }
     
     .dialogue {
         font-family: 'Comic Neue', cursive;
-        background-color: #3d3d3d;
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 1rem 0;
+        background-color: rgba(35, 35, 35, 0.9);
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin: 1.5rem 0;
         border-left: 3px solid var(--accent);
         font-weight: 500;
         color: #fff;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .dialogue:after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 30px;
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 15px solid rgba(35, 35, 35, 0.9);
+    }
+    
+    .panel-text {
+        position: relative;
+        z-index: 1;
     }
     
     .story-conclusion {
         font-size: 1.2rem;
-        line-height: 1.6;
-        margin-top: 2rem;
-        padding: 1.5rem;
-        background-color: #1e272e;
+        line-height: 1.7;
+        margin: 3rem 0;
+        padding: 2rem;
+        background-color: var(--intro-bg);
         border-left: 5px solid var(--accent);
-        border-radius: 5px;
+        border-radius: 0 10px 10px 0;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        font-style: italic;
+        padding: 2rem;
+        margin-top: 2.5rem;
+        text-align: center;
+    }
+    
+    .story-conclusion:before {
+        content: 'THE END';
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        transform: translateY(-50%) rotate(90deg);
+        font-family: 'Bangers', cursive;
+        color: var(--accent);
+        font-size: 2rem;
+        letter-spacing: 3px;
+        text-shadow: var(--text-shadow);
+        opacity: 0.8;
+    }
+    
+    .comic-footer {
+        text-align: center;
+        padding: 2rem;
+        background-color: var(--panel-bg);
+        border-radius: 0 0 10px 10px;
+        position: relative;
+        margin-top: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
     .btn-back {
-        margin-top: 2rem;
+        display: inline-block;
         background-color: var(--primary);
         color: white;
-        padding: 0.7rem 1.5rem;
-        border-radius: 5px;
+        padding: 0.8rem 1.8rem;
+        border-radius: 50px;
         font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-block;
         text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        font-size: 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-back:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.2), 
+            transparent
+        );
+        transition: 0.5s;
     }
     
     .btn-back:hover {
-        background-color: var(--secondary);
-        transform: translateY(-2px);
+        background-color: var(--accent);
+        transform: translateY(-3px);
+        color: white;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    
+    .btn-back:hover:before {
+        left: 100%;
     }
     
     .sound-effect {
         font-family: 'Bangers', cursive;
         color: var(--accent);
-        font-size: 1.4rem;
-        letter-spacing: 1px;
+        font-size: 1.6rem;
+        letter-spacing: 2px;
         text-align: center;
-        margin: 1rem 0;
+        margin: 1.5rem 0;
         text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        display: inline-block;
+        padding: 5px 15px;
+        transform: rotate(-5deg);
+        position: relative;
+    }
+    
+    .sound-effect:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: scale(1.2);
+        z-index: -1;
     }
     
     /* Bounce animation for sound effects */
     @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-        40% {transform: translateY(-10px);}
-        60% {transform: translateY(-5px);}
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0) rotate(-5deg);}
+        40% {transform: translateY(-15px) rotate(-5deg);}
+        60% {transform: translateY(-7px) rotate(-5deg);}
     }
     
     .animate-bounce {
-        animation: bounce 1s ease infinite;
+        animation: bounce 1.2s ease infinite;
+    }
+    
+    /* Comic book page curl effect */
+    .story-container:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 50px 50px;
+        border-color: transparent transparent rgba(255,255,255,0.1) transparent;
+        box-shadow: -10px 10px 10px rgba(0,0,0,0.2);
+        border-radius: 0 0 10px 0;
+    }
+    
+    /* Media Queries */
+    @media (max-width: 768px) {
+        .story-title {
+            font-size: 2.5rem;
+        }
+        
+        .story-panel {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        
+        .comic-stamp {
+            display: none;
+        }
+        
+        .story-panels:before {
+            left: 20px;
+        }
+        
+        .story-container {
+            padding: 1rem;
+        }
+        
+        .manga-panel {
+            padding: 1rem;
+        }
+        
+        .panel-content {
+            padding: 0.8rem;
+            font-size: 1rem;
+        }
+    }
+    
+    /* Improve text readability */
+    p, .panel-content p {
+        margin-bottom: 1rem;
+        line-height: 1.7;
+    }
+    
+    .manga-panel {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        background-color: var(--panel-bg);
+        border: 2px solid #444;
+    }
+    
+    .speech-bubble {
+        padding: 1.2rem;
+        margin: 1rem 0;
+        border-radius: 12px;
+        position: relative;
+        background-color: #fff;
+        color: #222;
+        font-weight: 500;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+    
+    .story-introduction {
+        padding: 2rem;
+        margin-bottom: 2.5rem;
+        border-radius: 8px;
+        background-color: var(--intro-bg);
+        border: 2px solid #555;
+    }
+    
+    /* Add clear distinction for dialogue */
+    .panel-content strong {
         display: inline-block;
+        margin-top: 0.75rem;
+        color: var(--accent);
+    }
+    
+    /* Make image captions more visible */
+    .manga-panel-image figcaption {
+        margin-top: 0.75rem;
+        padding: 0.5rem;
+        background-color: rgba(0,0,0,0.7);
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+    
+    /* Improve image info button visibility */
+    .image-info-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        background-color: var(--accent);
+        border: none;
+        opacity: 0.9;
+    }
+    
+    .image-info-btn:hover {
+        opacity: 1;
+        transform: scale(1.05);
     }
 </style>
 {% endblock %}
@@ -139,7 +508,10 @@
 {% block content %}
 <div class="container">
     <div class="story-container">
-        <h1 class="story-title">{{ story.title }}</h1>
+        <div class="comic-header">
+            <div class="comic-stamp">Issue #{{ story.id[:4] }}</div>
+            <h1 class="story-title">{{ story.title }}</h1>
+        </div>
         
         {% set intro, panels = story.markdown_story|split_by_panels %}
         
@@ -152,7 +524,8 @@
                 {% set panel_title = panel[0]|replace('## ', '') %}
                 {% set panel_content = panel|join(' ')|replace(panel[0], '')|trim %}
                 
-                <div class="story-panel">
+                <div class="story-panel" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                    <div class="panel-number">{{ loop.index }}</div>
                     <h2 class="panel-title">{{ panel_title }}</h2>
                     
                     {% set clean_content = panel_content|replace('**Visual Description:**', '')|replace('**Dialogue:**', '') %}
@@ -167,8 +540,8 @@
                                     {{ dialogue|safe }}
                                 </div>
                                 
-                                {% if 'CRASH!' in dialogue or 'BOOM!' in dialogue or 'BAM!' in dialogue or 'POW!' in dialogue or 'BANG!' in dialogue %}
-                                    {% set sound_effects = ['CRASH!', 'BOOM!', 'BAM!', 'POW!', 'BANG!'] %}
+                                {% if 'CRASH!' in dialogue or 'BOOM!' in dialogue or 'BAM!' in dialogue or 'POW!' in dialogue or 'BANG!' in dialogue or 'WHAM!' in dialogue %}
+                                    {% set sound_effects = ['CRASH!', 'BOOM!', 'BAM!', 'POW!', 'BANG!', 'WHAM!'] %}
                                     {% for effect in sound_effects %}
                                         {% if effect in dialogue %}
                                             <div class="sound-effect animate-bounce">{{ effect }}</div>
@@ -187,13 +560,18 @@
         </div>
         
         <div class="story-conclusion">
-            {% if story.markdown_story.split('\n\n')|last|trim|length > 0 and not story.markdown_story.split('\n\n')|last|trim|startswith('##') %}
-                <p>{{ story.markdown_story.split('\n\n')|last|trim|safe }}</p>
+            {% if story.markdown_story.split('\n\n')|last|trim|length > 0 %}
+                {% set last_part = story.markdown_story.split('\n\n')|last|trim %}
+                {% if not last_part.startswith('## ') %}
+                    <p>{{ last_part|safe }}</p>
+                {% endif %}
             {% endif %}
         </div>
         
-        <div class="text-center">
-            <a href="{{ url_for('index') }}" class="btn-back">← Back to Stories</a>
+        <div class="comic-footer">
+            <a href="{{ url_for('index') }}" class="btn-back">
+                <i class="bi bi-arrow-left me-2"></i>Back to Stories
+            </a>
         </div>
     </div>
 </div>
@@ -216,6 +594,27 @@
             });
             dialogue.innerHTML = text;
         });
+        
+        // Add dynamic spacing to panels based on content
+        const panels = document.querySelectorAll('.story-panel');
+        panels.forEach(panel => {
+            const contentLength = panel.querySelector('.panel-content').textContent.length;
+            const minHeight = 200;
+            const heightPerChar = 0.5;
+            const calculatedHeight = Math.max(minHeight, contentLength * heightPerChar);
+            panel.style.minHeight = `${calculatedHeight}px`;
+        });
+        
+        // Add subtle hover effects to elements
+        const title = document.querySelector('.story-title');
+        if (title) {
+            title.addEventListener('mouseover', function() {
+                this.style.textShadow = '4px 4px 0px rgba(0,0,0,0.4)';
+            });
+            title.addEventListener('mouseout', function() {
+                this.style.textShadow = '3px 3px 0px rgba(0,0,0,0.3)';
+            });
+        }
     });
 </script>
-{% endblock %} 
+{% endblock %}

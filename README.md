@@ -1,145 +1,132 @@
-# AI Comics - Immersive AI-Generated Story Experience
+# 🚀 AI Comic Generator
 
-AI Comics is an immersive web application that generates short stories with matching images, displayed in a comic book style. The application uses Google's Gemini 2.5 Pro Experimental 03-25 API to generate short stories based on user prompts, followed by image generation using a separate AI model.
+A web application that uses Google's Gemini API to generate comic-style stories from simple prompts. This application creates engaging narratives with a comic book aesthetic, complete with stylized panels and matching images.
 
-## Features
+## ✨ Features
 
-- Dark-themed comic book style design
-- Responsive layout for all device sizes
-- Immersive reading experience with animations and transitions
-- Two-step AI generation process:
-  1. Story generation using Gemini 2.5 Pro Experimental 03-25
-  2. Image generation using your choice of:
-     - Vertex AI's Imagen (recommended for highest quality)
-     - Gemini 1.5 Pro (for integrated workflow)
-     - Gemini 2.5 Pro (for experimental features)
-- Story archive to view all previously generated stories
+- 🖋️ **AI-Powered Storytelling**: Generate engaging comic-style stories from simple prompts using Google's Gemini API
+- 📝 **Comic-Style Formatting**: Stories are displayed with panel layouts, speech bubbles, and sound effects
+- 🎭 **Multiple Style Options**: Choose from different comic styles (comic book, manga, pixel art, etc.)
+- 🌓 **Dark Mode Design**: Built with a sleek dark theme for better reading experience
+- 📱 **Responsive Layout**: Works on desktop and mobile devices
+- 💨 **Animated Effects**: Dynamic animations for sound effects and UI elements
+- 🔄 **Fallback Mechanism**: Creates placeholder images when API access is limited
 
-## Technologies Used
+## 🖼️ Screenshots
 
-- **Backend**: Flask (Python)
-- **Frontend**: HTML5, CSS3, JavaScript
-- **AI Integration**:
-  - Google Gemini 2.5 Pro Experimental 03-25 for text generation
-  - Multiple options for image generation:
-    - Google Vertex AI's Imagen (recommended)
-    - Google Gemini 1.5 Pro
-    - Google Gemini 2.5 Pro (experimental)
-- **Design**: 
-  - Comic book inspired UI/UX
-  - Animations and transitions for immersive reading
+![Screenshot 1](static/img/screenshot-1.png)
+![Screenshot 2](static/img/screenshot-2.png)
 
-## How It Works
+## 🛠️ Technologies Used
 
-The application follows a two-step AI generation process:
+- **Backend**: Python, Flask
+- **Frontend**: HTML, CSS, JavaScript
+- **AI**: Google Gemini API
+- **Image Processing**: PIL (Python Imaging Library)
+- **Environment Management**: python-dotenv
 
-1. **Story Generation**: When a user submits a prompt, it's sent to Gemini 2.5 Pro Experimental 03-25, which generates a short story (approximately 150 words).
+## 🔧 Installation
 
-2. **Image Generation**: The story is analyzed to create an optimized image prompt, which is then sent to the configured image generation model (Vertex AI Imagen by default, but configurable to use Gemini models instead).
+### Prerequisites
 
-3. **Presentation**: The story and image are combined into a comic-book style presentation with animations and interactive elements.
+- Python 3.8 or higher
+- Gemini API key from [Google AI Studio](https://aistudio.google.com/)
 
-This modular approach allows you to use the best model for each specific task, resulting in higher quality output.
+### Setup Instructions
 
-## Setup and Installation
+1. **Clone the repository**
 
-1. Clone the repository:
-   ```
-   git clone [repository-url]
-   cd ai-comics
-   ```
-
-2. Create and activate a virtual environment:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-
-4. Set up your environment variables:
-   ```
-   cp .env.example .env
-   ```
-   Then edit the `.env` file to add your API keys and credentials.
-
-5. Run the application:
-   ```
-   flask run
-   ```
-
-6. Open your browser and navigate to `http://127.0.0.1:5000/`
-
-## API Configuration
-
-### Gemini API Setup (for story generation)
-
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey) to obtain your Gemini API key
-2. Add the API key to your `.env` file as `GEMINI_API_KEY`
-3. This application is configured to use Gemini 2.5 Pro Experimental 03-25 for optimal story generation
-
-### Image Generation Setup
-
-Choose one of the following options by setting the `IMAGE_GENERATION_MODEL` in your `.env` file:
-
-#### Option 1: Vertex AI's Imagen (recommended)
-1. Create a Google Cloud project and enable the Vertex AI API
-2. Create a service account with Vertex AI permissions
-3. Download the service account JSON key
-4. Add the path to the JSON key file to your `.env` file as `GOOGLE_APPLICATION_CREDENTIALS`
-5. Set `IMAGE_GENERATION_MODEL=vertex_ai_imagen` in your `.env` file
-
-#### Option 2: Gemini 1.5 Pro
-1. Ensure you have a Gemini API key (same as for story generation)
-2. Set `IMAGE_GENERATION_MODEL=gemini_1_5_pro` in your `.env` file
-
-#### Option 3: Gemini 2.5 Pro (experimental)
-1. Ensure you have a Gemini API key (same as for story generation)
-2. Set `IMAGE_GENERATION_MODEL=gemini_2_5_pro` in your `.env` file
-
-## Usage
-
-1. Enter a creative prompt in the story generation form
-2. Click "Generate Story" to initiate the two-step AI generation process
-3. View your generated story with matching image in comic book style
-4. Browse previously generated stories in the gallery
-5. Click on a story card to view the full story with its image
-
-## Project Structure
-
-```
-ai-comics/
-├── app.py                 # Flask application
-├── requirements.txt       # Python dependencies
-├── .env.example           # Example environment variables
-├── stories/               # Generated stories storage
-├── static/
-│   ├── css/
-│   │   └── style.css      # Main stylesheet
-│   ├── js/
-│   │   └── main.js        # Frontend JavaScript
-│   └── images/            # Static images
-└── templates/
-    ├── base.html          # Base template
-    ├── index.html         # Homepage
-    └── story.html         # Individual story view
+```bash
+git clone https://github.com/ashu/ai-comic-generator.git
+cd ai-comic-generator
 ```
 
-## Customization
+2. **Install dependencies**
 
-- Edit `static/css/style.css` to modify the visual design
-- Adjust animations and interactions in `static/js/main.js`
-- Modify the story or image generation parameters in `app.py`
-- Choose different image generation models in the `.env` file
+```bash
+pip install -r requirements.txt
+```
 
-## License
+If you encounter permissions issues, you may need to use:
 
-[MIT License](LICENSE)
+```bash
+pip install -r requirements.txt --break-system-packages
+```
 
-## Acknowledgements
+3. **Set up environment variables**
 
-- Google for providing access to Gemini 2.5 Pro Experimental and Vertex AI
-- Comic book artists and storytellers for design inspiration 
+Copy the `.env.example` file to `.env` and add your Gemini API key:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file and add your API key:
+
+```
+GEMINI_API_KEY=your_api_key_here
+```
+
+4. **Run the application**
+
+```bash
+python -m flask run
+```
+
+5. **Access the application**
+
+Open your browser and navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+## 🎮 Usage
+
+1. Go to the homepage and enter a prompt in the "Story Idea" field
+2. Select the number of panels and comic style
+3. Click "Generate Story"
+4. Wait for the AI to generate your comic story
+5. Enjoy reading your personalized comic!
+
+## 🔮 Future Enhancements
+
+- Text-to-speech narration for comics
+- Social sharing features
+- User accounts to save favorite comics
+- More comic style options
+- Export to PDF feature
+
+## 📊 Project Structure
+
+```
+ai-comic-generator/
+├── app.py               # Flask application with Gemini API integration
+├── .env                 # Environment variables (create from .env.example)
+├── .env.example         # Example environment variables template
+├── requirements.txt     # Python dependencies
+├── static/              # Static files
+│   ├── css/             # CSS styles
+│   ├── js/              # JavaScript files
+│   └── img/             # Images and assets
+├── templates/           # HTML templates
+│   ├── base.html        # Base template
+│   ├── index.html       # Homepage
+│   └── story.html       # Story display page
+└── stories/             # Generated stories (JSON)
+```
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 👤 Author
+
+- **Ashu**
+- GitHub: [ashu](https://github.com/ashu)
+
+## 🙏 Acknowledgements
+
+- Google for providing the Gemini API
+- The Flask team for the excellent web framework
+- The open-source community for all the amazing tools
+
+---
+
+⭐ If you find this project useful, please consider giving it a star on GitHub! 
