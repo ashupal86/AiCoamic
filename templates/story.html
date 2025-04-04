@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Comic Tale - {{ story.prompt|truncate(30) }}{% endblock %}
+
+{% block content %}
+<div class="container story-container">
+    <div class="story-navigation fade-in">
+        <a href="/" class="btn">&laquo; Back to Stories</a>
+    </div>
+    
+    <div class="story-panel fade-in">
+        <div class="story-header">
+            <h1>AI Comic Tale</h1>
+            <div class="story-meta">
+                <p><strong>Length:</strong> {{ story.markdown_story|wordcount }} words • {{ story.images|length }} panels</p>
+                <p><strong>Created:</strong> {{ story.created_at|replace('T', ' ')|truncate(16, True, '') }}</p>
+            </div>
+        </div>
+        
+        <div class="comic-story">
+            <!-- Replace markdown image references with actual images -->
+            {% set html_with_images = story.html_story %}
+            {% for image in story.images %}
+                {% set img_placeholder = '<p><img alt="' + image.panel + '" src="' + image.prompt + '" /></p>' %}
+                {% set img_replacement = '<div class="comic-image-container"><img src="' + image.url + '" alt="' + image.panel + '" class="story-image"></div>' %}
+                {% set html_with_images = html_with_images|replace(img_placeholder, img_replacement) %}
+            {% endfor %}
+            
+            <!-- Display the HTML story with embedded images -->
+            <div class="story-content stagger-fade-in">
+                {{ html_with_images }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="story-panels-grid">
+        <h2>Story Panels</h2>
+        <div class="panels-grid">
+            {% for image in story.images %}
+            <div class="panel-card fade-in">
+                <img src="{{ image.url }}" alt="{{ image.panel }}" class="panel-thumbnail">
+                <div class="panel-info">
+                    <h3>{{ image.panel|title }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="generate-more fade-in">
+        <h2>Create Your Own Story</h2>
+        <a href="/" class="btn">Generate a New Story</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Add page-specific animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Comic panel animations
+        const storyContent = document.querySelector('.story-content');
+        if (storyContent) {
+            // Add sequential fade-in to headings and paragraphs
+            const elements = storyContent.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
+            elements.forEach((el, index) => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                el.style.transitionDelay = `${0.1 + (index * 0.1)}s`;
+                
+                // Use Intersection Observer for scroll-based animation
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = 1;
+                            entry.target.style.transform = 'translateY(0)';
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                observer.observe(el);
+            });
+        }
+        
+        // Add zoom effect to images on click
+        const storyImages = document.querySelectorAll('.story-image');
+        storyImages.forEach(img => {
+            img.addEventListener('click', function() {
+                this.classList.toggle('zoomed');
+            });
+        });
+        
+        // Add parallax effect to images
+        window.addEventListener('scroll', function() {
+            const images = document.querySelectorAll('.story-image');
+            images.forEach(image => {
+                const imagePosition = image.getBoundingClientRect();
+                const scrollPosition = window.scrollY;
+                
+                // Only apply parallax if image is in viewport
+                if (imagePosition.top < window.innerHeight && imagePosition.bottom > 0) {
+                    const parallaxValue = (scrollPosition - imagePosition.top) * 0.05;
+                    image.style.transform = `translateY(${parallaxValue}px)`;
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 

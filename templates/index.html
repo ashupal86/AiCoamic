@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Comics - Immersive AI-Generated Stories{% endblock %}
+
+{% block hero %}
+<section class="hero">
+    <div class="container">
+        <h1 class="fade-in">AI Story Comics</h1>
+        <p class="fade-in">Discover AI-generated stories with matching images in comic book style</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="generate-section">
+        <h2 class="fade-in">Generate a New Story</h2>
+        <div class="generate-form fade-in">
+            <form id="generate-form" method="post" action="/generate">
+                <div class="form-group">
+                    <label for="prompt" class="form-label">Your Story Idea</label>
+                    <textarea name="prompt" id="prompt" class="form-control" rows="3" placeholder="Enter any story idea or concept you'd like! For example: 'A detective who can see through the eyes of inanimate objects' or 'A world where music creates visible colors in the air'"></textarea>
+                </div>
+                <p class="prompt-help">Be as creative as you want! The AI will generate a unique 500-word story with matching images in comic book style.</p>
+                <button type="submit" class="btn">Generate Story</button>
+            </form>
+        </div>
+    </section>
+    
+    <section class="stories-section">
+        <h2 class="fade-in">Recent Stories</h2>
+        
+        {% if stories %}
+        <div class="comic-container stagger-fade-in">
+            {% for story in stories %}
+            <div class="comic-panel" data-story-link="/story/{{ story.id }}">
+                {% if story.images and story.images|length > 0 %}
+                    <img src="{{ story.images[0].url }}" alt="Story illustration" class="panel-image">
+                {% else %}
+                    <img src="/static/images/placeholder.jpg" alt="Placeholder" class="panel-image">
+                {% endif %}
+                <div class="panel-content">
+                    <h3 class="panel-title">AI Comic Tale #{{ loop.index }}</h3>
+                    <p class="panel-excerpt">{{ story.markdown_story|striptags|truncate(100) }}</p>
+                    <p class="panel-stats">{{ story.images|length }} panels • {{ story.markdown_story|wordcount }} words</p>
+                    <a href="/story/{{ story.id }}" class="btn">Read Full Story</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="fade-in">
+            <div class="speech-bubble">
+                <p>No stories yet! Be the first to generate an amazing AI comic story.</p>
+            </div>
+        </div>
+        {% endif %}
+    </section>
+    
+    <section class="about-section">
+        <h2 class="fade-in">About AI Comics</h2>
+        <div class="story-panel fade-in">
+            <div class="story-content">
+                <p>AI Comics combines the power of Gemini 2.5 Pro Experimental and advanced image generation models to create unique, engaging stories with matching images. Each story is presented in an immersive comic book style designed to enhance your reading experience.</p>
+                <p>Simply provide a prompt, and let the AI create a captivating 500-word short story with matching images that bring your idea to life in comic book format!</p>
+                <p>The stories are generated using Gemini 2.5 Pro Experimental for the narrative, with each panel image created using a separate AI model optimized for visual storytelling.</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %} 

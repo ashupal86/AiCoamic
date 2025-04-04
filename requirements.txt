@@ -1,0 +1,18 @@
+Flask==2.3.3
+Werkzeug==2.3.7
+Jinja2==3.1.2
+requests==2.31.0
+python-dotenv==1.0.0
+markdown==3.4.4
+
+# Uncomment the libraries you need based on your image generation choice
+
+# For story generation (Gemini 2.5 Pro Experimental)
+# google-generativeai==0.4.0
+
+# For Vertex AI Imagen image generation
+# google-cloud-aiplatform==1.39.0
+
+# Optional: For image processing and manipulation
+# Pillow==10.1.0
+# numpy==1.26.0 
