@@ -1,0 +1,40 @@
+{
+  "id": "4a680261-b3a8-44ee-a1ad-d5ad4bba9821",
+  "prompt": "studnet save the world from teachers",
+  "markdown_story": "# School's Out...Forever!\n\nThe year is 2042. Teachers, overworked and underpaid, have finally snapped.  Powered by a mysterious energy drink called \"Grade-A Grind,\" they've gained superhuman abilities and declared themselves rulers of the world.  Detention is now a life sentence, and pop quizzes are instruments of torture.  Only a ragtag group of students stands between humanity and eternal homework.\n\n## Panel 1\n\n**Visual Description:** A wide shot of a dilapidated classroom. Papers are strewn everywhere, desks overturned. In the foreground, 15-year-old Maya, with bright pink hair and ripped jeans, wields a protractor like a sword.  She's facing a towering figure \u2013 Ms. Crabtree, her math teacher \u2013 whose eyes glow an eerie green. Ms. Crabtree\u2019s hand crackles with energy.  The camera angle is low, emphasizing Ms. Crabtree's imposing size.\n\n**Dialogue:** Ms. Crabtree: \"Give up, Maya!  You'll never escape the tyranny of\u2026EXTRA CREDIT!\" Maya: \"Not if I can help it, Ms. Crabtree!  Prepare to face the wrath of\u2026THE PROTRACTOR OF POWER!\"\n\n## Panel 2\n\n**Visual Description:** Close-up on Maya's face, determined and fierce. She leaps onto a toppled desk, using it as a springboard, and hurls the protractor. It spins towards Ms. Crabtree, trailing a shimmering, pink energy trail.  Onomatopoeia: \"FWISH!\"\n\n**Dialogue:** Maya: \"Take THAT!\"\n\n## Panel 3\n\n**Visual Description:** Medium shot. Ms. Crabtree tries to block the protractor with her energy-charged hand, but the protractor deflects the energy blast, hitting her square in the face.  Onomatopoeia: \"KLANG!\"  Ms. Crabtree stumbles backward, a look of shock and pain on her face.  Papers fly everywhere.\n\n**Dialogue:** Ms. Crabtree: \"Oof!\"\n\n## Panel 4\n\n**Visual Description:** Wide shot of the classroom. Ms. Crabtree collapses in a heap, the green glow fading from her eyes.  Other students, hiding under desks, cautiously emerge. Maya lands gracefully, the protractor returning to her hand like a boomerang.  She strikes a heroic pose, a confident smirk on her face.  The classroom, though still messy, seems brighter, the air lighter.\n\n**Dialogue:** Maya: \"Homework's cancelled, everyone!  Class dismissed!\"\n\nThe world was saved, not by superheroes in capes, but by a teenager with a protractor and a whole lot of courage. The era of teacher tyranny was over, replaced by a new age of student-led freedom, where pop quizzes were a distant nightmare and the only extra credit offered was extra recess.",
+  "image_paths": [
+    "static/img/stories/8a110258-ab4d-466c-b8f5-d8e734646856_20250404161724_cover.jpg",
+    "static/img/stories/8a110258-ab4d-466c-b8f5-d8e734646856_20250404161724_panel1.jpg",
+    "static/img/stories/8a110258-ab4d-466c-b8f5-d8e734646856_20250404161724_panel2.jpg",
+    "static/img/stories/4a680261-b3a8-44ee-a1ad-d5ad4bba9821_20250404163200_panel3.jpg",
+    "static/img/stories/8a110258-ab4d-466c-b8f5-d8e734646856_20250404161724_panel4.jpg"
+  ],
+  "image_prompts": [
+    {
+      "type": "cover",
+      "prompt": "Create a dynamic comic book cover for 'School's Out...Forever!' featuring a teenage girl with bright pink hair wielding a glowing protractor against a towering teacher with glowing green eyes. The backdrop shows a futuristic dystopian school with other students in the background. The title should be prominently displayed at the top in dramatic comic book lettering."
+    },
+    {
+      "type": "panel",
+      "number": 1,
+      "prompt": "Low-angle shot of a destroyed classroom with papers flying everywhere and overturned desks. In the foreground, a 15-year-old girl named Maya with bright pink hair and ripped jeans is holding a protractor like a sword, facing off against Ms. Crabtree, a towering teacher whose eyes glow eerie green and whose hand crackles with green energy. Maya looks determined while the teacher looks menacing. Comic book style with dramatic lighting."
+    },
+    {
+      "type": "panel",
+      "number": 2,
+      "prompt": "Close-up dynamic shot of Maya, a teenage girl with bright pink hair, leaping off a toppled desk with a fierce, determined expression. She's in mid-air throwing a protractor that trails a bright pink energy as it spins. Her mouth is open shouting 'Take THAT!' The background shows motion lines and a 'FWISH!' sound effect in comic book style."
+    },
+    {
+      "type": "panel",
+      "number": 3,
+      "prompt": "Medium shot of Ms. Crabtree, a teacher with glowing green eyes, trying to block a flying protractor with her energy-charged hand. The protractor is deflecting her energy blast back at her face. Show the impact with a 'KLANG!' sound effect. The teacher looks shocked and is stumbling backward with papers flying everywhere around her. Comic book style with action lines."
+    },
+    {
+      "type": "panel",
+      "number": 4,
+      "prompt": "Wide shot of a classroom with Ms. Crabtree collapsed on the floor, the green glow fading from her eyes. Other students are emerging from hiding under desks, looking relieved and surprised. In the center, Maya stands in a heroic pose with a confident smirk, catching the returning protractor in her hand like a boomerang. The classroom, though still messy, has brighter lighting to show the victory. Comic book style with speech bubble showing 'Homework's cancelled, everyone! Class dismissed!'"
+    }
+  ],
+  "created_date": "2025-04-04 16:17:29",
+  "title": "School's Out...Forever!"
+}

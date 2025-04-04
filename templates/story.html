@@ -1,110 +1,220 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}AI Comic Tale - {{ story.prompt|truncate(30) }}{% endblock %}
+{% block title %}{{ story.title }} | AI Comic Generator{% endblock %}
 
-{% block content %}
-<div class="container story-container">
-    <div class="story-navigation fade-in">
-        <a href="/" class="btn">&laquo; Back to Stories</a>
-    </div>
+{% block styles %}
+<style>
+    :root {
+        --primary: #6c5ce7;
+        --secondary: #a29bfe;
+        --accent: #fd79a8;
+        --light: #f8f9fa;
+        --dark: #343a40;
+    }
     
-    <div class="story-panel fade-in">
-        <div class="story-header">
-            <h1>AI Comic Tale</h1>
-            <div class="story-meta">
-                <p><strong>Length:</strong> {{ story.markdown_story|wordcount }} words • {{ story.images|length }} panels</p>
-                <p><strong>Created:</strong> {{ story.created_at|replace('T', ' ')|truncate(16, True, '') }}</p>
-            </div>
-        </div>
-        
-        <div class="comic-story">
-            <!-- Replace markdown image references with actual images -->
-            {% set html_with_images = story.html_story %}
-            {% for image in story.images %}
-                {% set img_placeholder = '<p><img alt="' + image.panel + '" src="' + image.prompt + '" /></p>' %}
-                {% set img_replacement = '<div class="comic-image-container"><img src="' + image.url + '" alt="' + image.panel + '" class="story-image"></div>' %}
-                {% set html_with_images = html_with_images|replace(img_placeholder, img_replacement) %}
-            {% endfor %}
-            
-            <!-- Display the HTML story with embedded images -->
-            <div class="story-content stagger-fade-in">
-                {{ html_with_images }}
-            </div>
-        </div>
-    </div>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--dark);
+        color: var(--light);
+    }
     
-    <div class="story-panels-grid">
-        <h2>Story Panels</h2>
-        <div class="panels-grid">
-            {% for image in story.images %}
-            <div class="panel-card fade-in">
-                <img src="{{ image.url }}" alt="{{ image.panel }}" class="panel-thumbnail">
-                <div class="panel-info">
-                    <h3>{{ image.panel|title }}</h3>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+    .story-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #2d3436;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
     
-    <div class="generate-more fade-in">
-        <h2>Create Your Own Story</h2>
-        <a href="/" class="btn">Generate a New Story</a>
-    </div>
-</div>
+    .story-title {
+        font-family: 'Bangers', cursive;
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        color: var(--accent);
+        text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+        letter-spacing: 2px;
+    }
+    
+    .story-intro {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background-color: #1e272e;
+        border-left: 5px solid var(--primary);
+        border-radius: 5px;
+    }
+    
+    .story-panels {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .story-panel {
+        background-color: #222831;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        border-top: 4px solid var(--primary);
+    }
+    
+    .panel-title {
+        font-family: 'Bangers', cursive;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: var(--secondary);
+        text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    }
+    
+    .panel-content {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .dialogue {
+        font-family: 'Comic Neue', cursive;
+        background-color: #3d3d3d;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-left: 3px solid var(--accent);
+        font-weight: 500;
+        color: #fff;
+    }
+    
+    .story-conclusion {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #1e272e;
+        border-left: 5px solid var(--accent);
+        border-radius: 5px;
+    }
+    
+    .btn-back {
+        margin-top: 2rem;
+        background-color: var(--primary);
+        color: white;
+        padding: 0.7rem 1.5rem;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-decoration: none;
+    }
+    
+    .btn-back:hover {
+        background-color: var(--secondary);
+        transform: translateY(-2px);
+    }
+    
+    .sound-effect {
+        font-family: 'Bangers', cursive;
+        color: var(--accent);
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+        text-align: center;
+        margin: 1rem 0;
+        text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+    }
+    
+    /* Bounce animation for sound effects */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+        40% {transform: translateY(-10px);}
+        60% {transform: translateY(-5px);}
+    }
+    
+    .animate-bounce {
+        animation: bounce 1s ease infinite;
+        display: inline-block;
+    }
+</style>
 {% endblock %}
 
-{% block extra_scripts %}
+{% block content %}
+<div class="container">
+    <div class="story-container">
+        <h1 class="story-title">{{ story.title }}</h1>
+        
+        {% set intro, panels = story.markdown_story|split_by_panels %}
+        
+        <div class="story-intro">
+            {{ intro|join(' ')|safe }}
+        </div>
+        
+        <div class="story-panels">
+            {% for panel in panels %}
+                {% set panel_title = panel[0]|replace('## ', '') %}
+                {% set panel_content = panel|join(' ')|replace(panel[0], '')|trim %}
+                
+                <div class="story-panel">
+                    <h2 class="panel-title">{{ panel_title }}</h2>
+                    
+                    {% set clean_content = panel_content|replace('**Visual Description:**', '')|replace('**Dialogue:**', '') %}
+                    
+                    <div class="panel-content">
+                        {% if '**Dialogue:**' in panel_content %}
+                            {% set parts = panel_content.split('**Dialogue:**') %}
+                            
+                            {% if parts|length > 1 %}
+                                {% set dialogue = parts[1]|trim %}
+                                <div class="dialogue">
+                                    {{ dialogue|safe }}
+                                </div>
+                                
+                                {% if 'CRASH!' in dialogue or 'BOOM!' in dialogue or 'BAM!' in dialogue or 'POW!' in dialogue or 'BANG!' in dialogue %}
+                                    {% set sound_effects = ['CRASH!', 'BOOM!', 'BAM!', 'POW!', 'BANG!'] %}
+                                    {% for effect in sound_effects %}
+                                        {% if effect in dialogue %}
+                                            <div class="sound-effect animate-bounce">{{ effect }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <div class="panel-text">
+                                {{ clean_content|safe }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="story-conclusion">
+            {% if story.markdown_story.split('\n\n')|last|trim|length > 0 and not story.markdown_story.split('\n\n')|last|trim|startswith('##') %}
+                <p>{{ story.markdown_story.split('\n\n')|last|trim|safe }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="text-center">
+            <a href="{{ url_for('index') }}" class="btn-back">← Back to Stories</a>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Add page-specific animations
     document.addEventListener('DOMContentLoaded', function() {
-        // Comic panel animations
-        const storyContent = document.querySelector('.story-content');
-        if (storyContent) {
-            // Add sequential fade-in to headings and paragraphs
-            const elements = storyContent.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
-            elements.forEach((el, index) => {
-                el.style.opacity = 0;
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-                el.style.transitionDelay = `${0.1 + (index * 0.1)}s`;
-                
-                // Use Intersection Observer for scroll-based animation
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.style.opacity = 1;
-                            entry.target.style.transform = 'translateY(0)';
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-                
-                observer.observe(el);
-            });
-        }
+        // Extract sound effects from dialogue and animate them
+        const dialogues = document.querySelectorAll('.dialogue');
+        const soundEffects = ['CRASH!', 'BOOM!', 'BAM!', 'POW!', 'BANG!', 'WHOOSH!', 'ZWIP!', 'WHAM!'];
         
-        // Add zoom effect to images on click
-        const storyImages = document.querySelectorAll('.story-image');
-        storyImages.forEach(img => {
-            img.addEventListener('click', function() {
-                this.classList.toggle('zoomed');
-            });
-        });
-        
-        // Add parallax effect to images
-        window.addEventListener('scroll', function() {
-            const images = document.querySelectorAll('.story-image');
-            images.forEach(image => {
-                const imagePosition = image.getBoundingClientRect();
-                const scrollPosition = window.scrollY;
-                
-                // Only apply parallax if image is in viewport
-                if (imagePosition.top < window.innerHeight && imagePosition.bottom > 0) {
-                    const parallaxValue = (scrollPosition - imagePosition.top) * 0.05;
-                    image.style.transform = `translateY(${parallaxValue}px)`;
+        dialogues.forEach(dialogue => {
+            let text = dialogue.innerHTML;
+            soundEffects.forEach(effect => {
+                if (text.includes(effect)) {
+                    text = text.replace(
+                        effect, 
+                        `<span class="sound-effect animate-bounce">${effect}</span>`
+                    );
                 }
             });
+            dialogue.innerHTML = text;
         });
     });
 </script>

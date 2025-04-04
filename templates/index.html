@@ -1,71 +1,338 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}AI Comics - Immersive AI-Generated Stories{% endblock %}
+{% block title %}AI Comic Studio - Turn Your Ideas into Comics{% endblock %}
 
-{% block hero %}
-<section class="hero">
-    <div class="container">
-        <h1 class="fade-in">AI Story Comics</h1>
-        <p class="fade-in">Discover AI-generated stories with matching images in comic book style</p>
-    </div>
-</section>
+{% block head %}
+<style>
+    /* Comic Loader Animation */
+    .comic-loader-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        display: none;
+    }
+    
+    .comic-loader {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin-bottom: 1rem;
+    }
+    
+    .comic-loader-frame {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 8px solid var(--primary);
+        border-radius: 20px;
+        overflow: hidden;
+        animation: pulse 2s infinite;
+        background-color: var(--bg-tertiary);
+    }
+    
+    .comic-loader-title {
+        color: white;
+        font-family: var(--comic-font);
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 0 var(--primary);
+    }
+    
+    .comic-loader-progress {
+        color: white;
+        font-family: var(--comic-font);
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .comic-loader-bubble {
+        position: absolute;
+        padding: 15px;
+        background-color: white;
+        border: 3px solid black;
+        border-radius: 25px;
+        font-family: var(--comic-font);
+        font-size: 1rem;
+        transform: rotate(-5deg);
+        box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+    }
+    
+    .loader-bubble-1 {
+        top: 20px;
+        left: 30px;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .loader-bubble-2 {
+        bottom: 40px;
+        right: 20px;
+        animation: float 4s ease-in-out infinite;
+    }
+    
+    .comic-loader-character {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background-color: var(--primary);
+        border-radius: 50%;
+        border: 4px solid black;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: bounce 1s infinite alternate;
+    }
+    
+    .comic-loader-character::before, 
+    .comic-loader-character::after {
+        content: "";
+        position: absolute;
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 50%;
+        width: 20px;
+        height: 30px;
+        top: 20px;
+    }
+    
+    .comic-loader-character::before {
+        left: 20px;
+    }
+    
+    .comic-loader-character::after {
+        right: 20px;
+    }
+    
+    .comic-loader-smile {
+        position: absolute;
+        width: 50px;
+        height: 20px;
+        border-bottom: 4px solid black;
+        border-radius: 50%;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .loader-action-word {
+        position: absolute;
+        font-family: var(--comic-font);
+        font-size: 2.5rem;
+        color: yellow;
+        text-shadow: -3px -3px 0 black, 3px -3px 0 black, -3px 3px 0 black, 3px 3px 0 black;
+        animation: actionWord 0.5s infinite alternate;
+    }
+    
+    .action-pow {
+        top: 50px;
+        right: 40px;
+        transform: rotate(15deg);
+    }
+    
+    .action-zoom {
+        bottom: 150px;
+        left: 30px;
+        transform: rotate(-15deg);
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0) rotate(-5deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+        100% { transform: translateY(0) rotate(-5deg); }
+    }
+    
+    @keyframes bounce {
+        from { transform: translateX(-50%) translateY(0); }
+        to { transform: translateX(-50%) translateY(-20px); }
+    }
+    
+    @keyframes actionWord {
+        from { transform: scale(1) rotate(15deg); }
+        to { transform: scale(1.2) rotate(15deg); }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <section class="generate-section">
-        <h2 class="fade-in">Generate a New Story</h2>
-        <div class="generate-form fade-in">
-            <form id="generate-form" method="post" action="/generate">
-                <div class="form-group">
-                    <label for="prompt" class="form-label">Your Story Idea</label>
-                    <textarea name="prompt" id="prompt" class="form-control" rows="3" placeholder="Enter any story idea or concept you'd like! For example: 'A detective who can see through the eyes of inanimate objects' or 'A world where music creates visible colors in the air'"></textarea>
+<!-- Hero Section -->
+<section class="hero bg-dark text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4" style="font-family: 'Bangers', cursive; letter-spacing: 2px;">
+                    AI Comic Story Generator
+                </h1>
+                <p class="lead mb-4">
+                    Create captivating comic-style stories with advanced AI storytelling. Generate unique narratives in seconds!
+                </p>
+                <div class="mb-4">
+                    <a href="#generate" class="btn btn-primary btn-lg px-4 me-2">
+                        <i class="bi bi-magic me-2"></i>Generate Story
+                    </a>
+                    <a href="#stories" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-journals me-2"></i>Browse Stories
+                    </a>
                 </div>
-                <p class="prompt-help">Be as creative as you want! The AI will generate a unique 500-word story with matching images in comic book style.</p>
-                <button type="submit" class="btn">Generate Story</button>
-            </form>
+            </div>
         </div>
-    </section>
-    
-    <section class="stories-section">
-        <h2 class="fade-in">Recent Stories</h2>
+    </div>
+</section>
+
+<!-- Generator Section -->
+<section id="generate" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="bi bi-magic me-2"></i>Generate Your Story
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="generatorForm" action="/generate" method="post">
+                            <div class="mb-3">
+                                <label for="prompt" class="form-label">Your Story Idea:</label>
+                                <input type="text" class="form-control form-control-lg" id="prompt" name="prompt" 
+                                    placeholder="Enter your story idea (e.g., 'Space pirates discover an ancient alien artifact')" required>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="num_panels" class="form-label">Number of Panels:</label>
+                                    <select class="form-select" id="num_panels" name="num_panels">
+                                        <option value="3">3 Panels (Short)</option>
+                                        <option value="4" selected>4 Panels (Standard)</option>
+                                        <option value="5">5 Panels (Extended)</option>
+                                        <option value="6">6 Panels (Long)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="style" class="form-label">Story Style:</label>
+                                    <select class="form-select" id="style" name="style">
+                                        <option value="comic book" selected>Comic Book</option>
+                                        <option value="manga">Manga</option>
+                                        <option value="pixel art">Pixel Art</option>
+                                        <option value="watercolor">Watercolor</option>
+                                        <option value="3D rendered">3D Rendered</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg" id="generateButton">
+                                    <i class="bi bi-magic me-2"></i>Generate Story
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div id="generationProgress" class="mt-4 d-none">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="text-center mt-2" id="progressText">Crafting your story...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Stories -->
+<section id="stories" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5" style="font-family: 'Bangers', cursive; letter-spacing: 2px;">
+            <i class="bi bi-journal-richtext me-2"></i>Recent Stories
+        </h2>
         
         {% if stories %}
-        <div class="comic-container stagger-fade-in">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for story in stories %}
-            <div class="comic-panel" data-story-link="/story/{{ story.id }}">
-                {% if story.images and story.images|length > 0 %}
-                    <img src="{{ story.images[0].url }}" alt="Story illustration" class="panel-image">
-                {% else %}
-                    <img src="/static/images/placeholder.jpg" alt="Placeholder" class="panel-image">
-                {% endif %}
-                <div class="panel-content">
-                    <h3 class="panel-title">AI Comic Tale #{{ loop.index }}</h3>
-                    <p class="panel-excerpt">{{ story.markdown_story|striptags|truncate(100) }}</p>
-                    <p class="panel-stats">{{ story.images|length }} panels • {{ story.markdown_story|wordcount }} words</p>
-                    <a href="/story/{{ story.id }}" class="btn">Read Full Story</a>
+            <div class="col">
+                <div class="card h-100 story-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ story.title or "Untitled Story" }}</h5>
+                        <p class="card-text text-muted">
+                            {{ (story.markdown_story|striptags|truncate(100)) if story.markdown_story else "No content available" }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{{ url_for('story', story_id=story.id) }}" class="btn btn-sm btn-outline-primary">Read Story</a>
+                            </div>
+                            <small class="text-muted">{{ story.created_date }}</small>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <div class="fade-in">
-            <div class="speech-bubble">
-                <p>No stories yet! Be the first to generate an amazing AI comic story.</p>
-            </div>
+        <div class="text-center py-5">
+            <p class="lead">No stories generated yet. Be the first to create one!</p>
+            <a href="#generate" class="btn btn-primary">Generate a Story</a>
         </div>
         {% endif %}
-    </section>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const generatorForm = document.getElementById('generatorForm');
+    const generateButton = document.getElementById('generateButton');
+    const generationProgress = document.getElementById('generationProgress');
+    const progressBar = document.querySelector('.progress-bar');
+    const progressText = document.getElementById('progressText');
     
-    <section class="about-section">
-        <h2 class="fade-in">About AI Comics</h2>
-        <div class="story-panel fade-in">
-            <div class="story-content">
-                <p>AI Comics combines the power of Gemini 2.5 Pro Experimental and advanced image generation models to create unique, engaging stories with matching images. Each story is presented in an immersive comic book style designed to enhance your reading experience.</p>
-                <p>Simply provide a prompt, and let the AI create a captivating 500-word short story with matching images that bring your idea to life in comic book format!</p>
-                <p>The stories are generated using Gemini 2.5 Pro Experimental for the narrative, with each panel image created using a separate AI model optimized for visual storytelling.</p>
-            </div>
-        </div>
-    </section>
-</div>
+    const loadingMessages = [
+        "Brainstorming epic storylines...",
+        "Crafting dialogue for your characters...",
+        "Developing plot twists...",
+        "Adding narrative depth...",
+        "Polishing your story..."
+    ];
+    
+    generatorForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Disable button and show progress
+        generateButton.disabled = true;
+        generationProgress.classList.remove('d-none');
+        
+        // Animate progress bar
+        let progress = 0;
+        let messageIndex = 0;
+        
+        const interval = setInterval(function() {
+            progress += 5;
+            progressBar.style.width = progress + '%';
+            
+            if (progress % 20 === 0 && messageIndex < loadingMessages.length) {
+                progressText.textContent = loadingMessages[messageIndex];
+                messageIndex++;
+            }
+            
+            if (progress >= 100) {
+                clearInterval(interval);
+                // Submit the form for real
+                generatorForm.submit();
+            }
+        }, 300);
+    });
+});
+</script>
 {% endblock %} 
